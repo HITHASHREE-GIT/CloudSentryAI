@@ -79,3 +79,7 @@ $RECYCLE.BIN/
 # ─── VS Code Extensions (personal tooling) ───
 .synexus/
 .github/
+
+# ─── Synexus Extension (persistent interference) ───
+.synexus/
+.github/workflows/synexus-enforcer.yml
