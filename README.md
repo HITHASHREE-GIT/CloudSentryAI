@@ -2,24 +2,29 @@
 
 > **A lightweight Cloud Security Posture Management (CSPM) platform for small SaaS companies.**
 
+![Status](https://img.shields.io/badge/status-complete-success)
+![License](https://img.shields.io/badge/license-academic-blue)
+![Python](https://img.shields.io/badge/python-3.11-blue)
+![React](https://img.shields.io/badge/react-18-61dafb)
+
 ---
 
-## 📌 What Is This Project?
+## 📌 What Is This?
 
-CloudSentry AI is a Cloud Security Posture Management platform that:
+CloudSentry AI is a **Cloud Security Posture Management** platform that:
 
-- 🔍 **Discovers** AWS cloud resources (S3, IAM, EC2, RDS, CloudTrail, VPC)
+- 🔍 **Discovers** AWS cloud resources (S3, IAM, EC2, RDS, CloudTrail)
 - ⚙️ **Collects** security-relevant configuration
-- 📏 **Evaluates** deterministic security rules (CIS/NIST-aligned)
+- 📏 **Evaluates** 8 deterministic security rules aligned with CIS AWS Benchmarks
 - 🎯 **Prioritizes** findings using a transparent risk engine + ML
 - 📊 **Displays** actionable findings with evidence and remediation
-- 🏢 **Supports** real customer scenarios (see LaunchNest demo below)
+- 🏢 **Demonstrates** the platform against a realistic demo customer (**LaunchNest**)
 
 ---
 
 ## 🏢 Demo Customer: LaunchNest
 
-To make the project realistic, we built a **simulated small SaaS customer** called **LaunchNest**:
+To make the demo realistic, we built **LaunchNest** — a fictional small SaaS project-management platform:
 
 | Attribute | Value |
 |-----------|-------|
@@ -28,105 +33,263 @@ To make the project realistic, we built a **simulated small SaaS customer** call
 | **Cloud** | AWS |
 | **Product** | Online project-management platform |
 | **Security Team** | None (no dedicated cloud-security engineer) |
+| **Demo Login** | `hira@gmail.com` / `demo123` |
 
-LaunchNest uses AWS for:
-- 🗄️ S3 (documents, backups)
-- 💻 EC2 (web/API servers)
-- 🗃️ RDS (customer database)
-- 🔐 IAM (users, roles, policies)
-- 📜 CloudTrail (audit logs)
-
-CloudSentry AI scans LaunchNest's **simulated AWS environment** to detect misconfigurations.
+CloudSentry AI scans LaunchNest's **simulated AWS environment** and reports security issues.
 
 ---
 
 ## 🏗️ Architecture
 
 ```text
-                    OUR COMPLETE DEMO
+                    CLOUDSENTRY AI ECOSYSTEM
                            │
              ┌─────────────┴─────────────┐
              │                           │
              ▼                           ▼
       🏢 LaunchNest                 🛡️ CloudSentry AI
       Customer SaaS                Security Platform
-             │                           │
-             ▼                           ▼
-      Simulated AWS  ────────→  Scanner + Rules + Risk
+      (React :5174 + FastAPI :8000) (React :5173 + FastAPI :8001)
              │                           │
              └─────────────┬─────────────┘
+                           │
                            ▼
-                    Findings Dashboard
-Project Structure
-CloudSentryAI/
-├── cloudsentry/          🛡️ Security platform
-│   ├── backend/          FastAPI + rules + ML
-│   └── frontend/         React dashboard
-│
-├── launchnest/           🏢 Customer SaaS demo
-│   ├── backend/          FastAPI
-│   ├── frontend/         React
-│   └── simulated_aws/    JSON cloud resources
-│
-├── ml_workspace/         🧠 ML development
-│   ├── datasets/         CSV datasets
-│   ├── models/           Trained models
-│   ├── notebooks/        Jupyter experiments
-│   └── scripts/          Training scripts
-│
-├── docs/                 📚 Documentation
-├── launcher/             ⚡ Helper scripts
-└── README.md             📖 This file
+                  🌩️ Simulated AWS
+                  (13 resources, 7 misconfigured)
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │  8 Security     │
+                  │  Rules          │
+                  └────────┬────────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │  Risk Engine    │
+                  │  (0-100 scores) │
+                  └────────┬────────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │  ML Predictor   │
+                  │  (XGBoost/RF)   │
+                  └────────┬────────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │  10 Findings    │
+                  │  Dashboard      │
+                  └─────────────────┘
+
+---
+
+## 📸 Screenshots
+
+### CloudSentry AI (Security Platform)
+
+#### Overview Dashboard
+![CloudSentry Overview](docs/screenshots/01-cs-overview.png)
+
+#### Findings Table
+![CloudSentry Findings](docs/screenshots/02-cs-findings.png)
+
+#### Finding Detail (with ML Prediction)
+![CloudSentry Detail](docs/screenshots/03-cs-detail.png)
+
+#### API Documentation
+![CloudSentry API](docs/screenshots/04-cs-api.png)
+
+### LaunchNest (Demo Customer)
+
+#### Login
+![LaunchNest Login](docs/screenshots/05-ln-login.png)
+
+#### Dashboard
+![LaunchNest Dashboard](docs/screenshots/06-ln-dashboard.png)
+
+#### Projects
+![LaunchNest Projects](docs/screenshots/07-ln-projects.png)
+
+#### Tasks
+![LaunchNest Tasks](docs/screenshots/08-ln-tasks.png)
+
+#### Team
+![LaunchNest Team](docs/screenshots/09-ln-team.png)
+
+#### API Documentation
+![LaunchNest API](docs/screenshots/10-ln-api.png)
+
+---
+
+              
+
 🛠️ Tech Stack
 Layer	Technology
 Backend	Python 3.11 + FastAPI
 Frontend	React 18 + Vite
-Database	SQLite (dev) → PostgreSQL (prod)
-ML	scikit-learn, XGBoost, Pandas
-Cloud SDK	Boto3 (future real AWS)
+Database	SQLite (dev)
 Auth	JWT + bcrypt
-Version Control	Git + GitHub
-🎯 Initial Security Rules (8 Checks)
-#	Rule	Severity
-1	Public S3 Bucket	🔴 Critical
-2	Excessive IAM Permissions	🔴 Critical
-3	SSH Exposed to Internet	🟠 High
-4	Root MFA Disabled	🔴 Critical
-5	Stale IAM Access Key	🟠 High
-6	Unused IAM User	🟡 Medium
-7	CloudTrail Disabled	🟠 High
-8	Unencrypted Storage	🟠 High
-🚦 Status
-Phase	Status
-Foundation (folders, Git)	✅ Complete
-Simulated AWS JSON	⏳ Next
-CloudSentry Backend	⏳ Pending
-CloudSentry Frontend	⏳ Pending
-LaunchNest Backend	⏳ Pending
-LaunchNest Frontend	⏳ Pending
-ML Workspace	⏳ Pending
-Documentation	⏳ Pending
-📚 Documentation
+ML	scikit-learn + XGBoost
+ORM	SQLAlchemy
+Validation	Pydantic
+Version Control	Git
+🎯 Security Rules (CIS-Aligned)
+#	Rule	Severity	CIS Reference
+1	Public S3 Bucket	🔴 CRITICAL	CIS AWS 2.1.5
+2	Excessive IAM Permissions	🔴 CRITICAL	CIS AWS 1.16
+3	SSH Exposed to Internet	🟠 HIGH	CIS AWS 5.2
+4	Root Account MFA Disabled	🔴 CRITICAL	CIS AWS 1.5
+5	Stale IAM Access Key	🟠 HIGH	CIS AWS 1.14
+6	Unused IAM User	🟡 MEDIUM	CIS AWS 1.12
+7	CloudTrail Logging Disabled	🟠 HIGH	CIS AWS 3.1
+8	Unencrypted Storage	🟠 HIGH	CIS AWS 2.1.1
+🧠 ML Integration
 
-Detailed docs live in docs/:
+We trained and compared 3 tabular ML models on a synthetic dataset of 1,500 cloud configurations:
+Model	F1 Score	Winner?
+Gradient Boosting	0.896	—
+Random Forest	0.937	🥈
+XGBoost	0.940	🏆 Deployed
 
-    Architecture overview
+Model chosen by measured evidence, not popularity.
 
-    Database schema
+The ML model provides an additional prioritization signal alongside the deterministic rule-based severity. Rules remain the authoritative detection layer.
+🚀 How to Run
+Prerequisites
 
-    API endpoints
+    Python 3.11+
 
-    Viva preparation notes
+    Node.js 18+
 
+    Git
+
+1. Clone the Repository
+bash
+
+git clone <your-repo-url>
+cd CloudSentryAI
+
+2. Start CloudSentry Backend (Port 8001)
+bash
+
+cd cloudsentry/backend
+python -m venv venv
+venv\Scripts\activate         # Windows
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8001
+
+3. Start CloudSentry Frontend (Port 5173)
+bash
+
+cd cloudsentry/frontend
+npm install
+npm run dev
+
+4. Start LaunchNest Backend (Port 8000)
+bash
+
+cd launchnest/backend
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+python -m app.utils.seed        # Seed demo data
+uvicorn main:app --reload --port 8000
+
+5. Start LaunchNest Frontend (Port 5174)
+bash
+
+cd launchnest/frontend
+npm install
+npm run dev
+
+6. Open in Browser
+App	URL
+CloudSentry Dashboard	http://localhost:5173
+CloudSentry API Docs	http://localhost:8001/docs
+LaunchNest SaaS	http://localhost:5174
+LaunchNest API Docs	http://localhost:8000/docs
+Demo Credentials
+text
+
+Email:    hira@gmail.com
+Password: demo123
+
+📁 Project Structure
+text
+
+CloudSentryAI/
+├── cloudsentry/              🛡️ Security platform
+│   ├── backend/              FastAPI + rules + risk + ML
+│   │   └── app/
+│   │       ├── adapters/     Reads simulated AWS
+│   │       ├── normalizer/   Common data model
+│   │       ├── rules/        8 security rules
+│   │       ├── risk/         Transparent scoring
+│   │       ├── ml/           ML predictor (XGBoost)
+│   │       └── routers/      API endpoints
+│   └── frontend/             React dashboard
+│
+├── launchnest/               🏢 Customer SaaS
+│   ├── backend/              FastAPI + JWT auth
+│   ├── frontend/             React SaaS UI
+│   └── simulated_aws/        8 JSON config files
+│
+├── ml_workspace/             🧠 ML training
+│   ├── datasets/             1500-row synthetic dataset
+│   ├── models/               Trained .pkl models
+│   └── scripts/              Data generator + training
+│
+├── docs/                     📚 Documentation
+│   ├── screenshots/          10 UI screenshots
+│   ├── ARCHITECTURE.md
+│   ├── VIVA_NOTES.md
+│   └── DEMO_SCRIPT.md
+│
+└── README.md                 📖 This file
+
+🔒 Security Posture Summary
+
+When CloudSentry scans the LaunchNest demo environment, it detects:
+Metric	Value
+Resources scanned	13
+Rules applied	8
+Total checks	104
+Findings detected	10
+Critical	3
+High	5
+Medium	2
+Security Score	52/100
 ⚠️ Important Notes
 
-    Simulated AWS — This project uses a simulated AWS environment (JSON files). It is NOT connected to a real AWS account yet.
+    Simulated AWS — This project uses a simulated AWS environment (JSON files). It is NOT connected to a real AWS account.
 
     Read-only design — Future real AWS integration uses read-only access only.
 
-    ML role — ML is used for prioritization, not as the sole detection layer.
+    ML role — ML provides prioritization, not sole detection. Rules remain authoritative.
 
-    Rule-based core — Security rules remain the deterministic primary detection layer.
+    Academic project — Built as a capstone/demo project, not production-ready.
+
+🎯 Project Goals Achieved
+
+    ✅ Cloud resource discovery
+
+    ✅ Configuration collection
+
+    ✅ Deterministic rule engine (8 rules)
+
+    ✅ Transparent risk scoring
+
+    ✅ ML model comparison + integration
+
+    ✅ REST API with auto-docs
+
+    ✅ React dashboard (CloudSentry)
+
+    ✅ Demo customer SaaS (LaunchNest)
+
+    ✅ Multi-tenant-ready architecture
+
+    ✅ Full documentation
 
 🏆 Final Goal
 text
