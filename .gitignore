@@ -45,13 +45,12 @@ secrets/
 *.db-journal
 
 # ─── ML / Data ───
+# Ignore all .pkl by default
 *.pkl
-*.h5
-*.joblib
-*.onnx
-!ml_workspace/models/.gitkeep
-datasets/*.csv
-!datasets/.gitkeep
+
+# ...but keep the ML models needed at runtime
+!cloudsentry/backend/app/ml/*.pkl
+!ml_workspace/models/*.pkl
 
 # ─── Logs ───
 *.log
