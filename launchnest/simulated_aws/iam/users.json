@@ -1,0 +1,101 @@
+[
+  {
+    "user_name": "launchnest-admin",
+    "user_id": "AIDA1234567890ABCDE",
+    "arn": "arn:aws:iam::123456789012:user/launchnest-admin",
+    "created_date": "2023-01-10T09:00:00Z",
+    "role": "admin",
+    "mfa_enabled": true,
+    "password_last_used": "2026-10-01T16:30:00Z",
+    "last_activity_days_ago": 1,
+    "console_access": true,
+    "attached_policies": [
+      {
+        "policy_name": "AdministratorAccess",
+        "policy_arn": "arn:aws:iam::aws:policy/AdministratorAccess",
+        "risk": "HIGH",
+        "reason": "Grants full administrative privileges - violates least privilege principle"
+      }
+    ],
+    "inline_policies": [],
+    "groups": [],
+    "access_keys": [
+      {
+        "key_id": "AKIAIOSFODNN7EXAMPLE",
+        "status": "Active",
+        "created_date": "2024-01-15T10:00:00Z",
+        "created_days_ago": 626,
+        "last_used_date": "2026-10-01T16:25:00Z",
+        "last_used_days_ago": 1,
+        "rotation_needed": false
+      }
+    ],
+    "tags": {
+      "Department": "Engineering",
+      "Owner": "cto@launchnest.demo"
+    }
+  },
+  {
+    "user_name": "launchnest-developer",
+    "user_id": "AIDA0987654321FGHIJ",
+    "arn": "arn:aws:iam::123456789012:user/launchnest-developer",
+    "created_date": "2023-05-20T11:15:00Z",
+    "role": "developer",
+    "mfa_enabled": false,
+    "password_last_used": "2026-03-15T09:00:00Z",
+    "last_activity_days_ago": 200,
+    "console_access": true,
+    "attached_policies": [
+      {
+        "policy_name": "PowerUserAccess",
+        "policy_arn": "arn:aws:iam::aws:policy/PowerUserAccess",
+        "risk": "MEDIUM",
+        "reason": "Broad permissions beyond typical developer needs"
+      }
+    ],
+    "inline_policies": [],
+    "groups": [],
+    "access_keys": [
+      {
+        "key_id": "AKIAI44QH8DHBEXAMPLE",
+        "status": "Active",
+        "created_date": "2025-08-28T14:20:00Z",
+        "created_days_ago": 400,
+        "last_used_date": "2026-03-15T09:05:00Z",
+        "last_used_days_ago": 200,
+        "rotation_needed": true,
+        "reason": "Key is 400 days old - exceeds 90-day rotation policy"
+      }
+    ],
+    "tags": {
+      "Department": "Engineering",
+      "Status": "former-employee-maybe"
+    }
+  },
+  {
+    "user_name": "launchnest-intern",
+    "user_id": "AIDA1111111111KLMNO",
+    "arn": "arn:aws:iam::123456789012:user/launchnest-intern",
+    "created_date": "2024-06-01T13:00:00Z",
+    "role": "intern",
+    "mfa_enabled": false,
+    "password_last_used": "2025-05-20T10:00:00Z",
+    "last_activity_days_ago": 500,
+    "console_access": true,
+    "attached_policies": [
+      {
+        "policy_name": "ReadOnlyAccess",
+        "policy_arn": "arn:aws:iam::aws:policy/ReadOnlyAccess",
+        "risk": "LOW",
+        "reason": "Read-only permissions acceptable for intern"
+      }
+    ],
+    "inline_policies": [],
+    "groups": [],
+    "access_keys": [],
+    "tags": {
+      "Department": "Engineering",
+      "Status": "internship-ended-2025"
+    }
+  }
+]

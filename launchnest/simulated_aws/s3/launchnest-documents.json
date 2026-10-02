@@ -1,0 +1,37 @@
+{
+  "bucket_name": "launchnest-documents",
+  "region": "us-east-1",
+  "creation_date": "2024-03-15T10:30:00Z",
+  "owner": "launchnest-admin",
+  "purpose": "Primary storage for customer project documents",
+  "public_access_block": true,
+  "block_public_acls": true,
+  "block_public_policy": true,
+  "ignore_public_acls": true,
+  "restrict_public_buckets": true,
+  "encryption": {
+    "enabled": true,
+    "algorithm": "AES256",
+    "type": "SSE-S3"
+  },
+  "versioning": {
+    "enabled": true,
+    "status": "Enabled",
+    "mfa_delete": false
+  },
+  "logging": {
+    "enabled": true,
+    "target_bucket": "launchnest-backups",
+    "target_prefix": "logs/documents/"
+  },
+  "acl": "private",
+  "tags": {
+    "Environment": "production",
+    "Project": "launchnest",
+    "DataClassification": "confidential",
+    "Owner": "security-team"
+  },
+  "estimated_object_count": 4520,
+  "estimated_size_gb": 12.4,
+  "last_accessed": "2026-10-02T08:15:00Z"
+}

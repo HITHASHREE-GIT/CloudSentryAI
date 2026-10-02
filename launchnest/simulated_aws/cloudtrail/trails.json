@@ -1,0 +1,31 @@
+[
+  {
+    "trail_name": "launchnest-trail",
+    "trail_arn": "arn:aws:cloudtrail:us-east-1:123456789012:trail/launchnest-trail",
+    "region": "us-east-1",
+    "created_date": "2024-04-20T12:00:00Z",
+    "s3_bucket_name": "launchnest-backups",
+    "s3_key_prefix": "cloudtrail-logs/",
+    "is_logging": false,
+    "is_multi_region_trail": false,
+    "include_global_service_events": false,
+    "log_file_validation_enabled": false,
+    "cloud_watch_logs_log_group_arn": null,
+    "cloud_watch_logs_role_arn": null,
+    "kms_key_id": null,
+    "sns_topic_name": null,
+    "has_custom_event_selectors": false,
+    "has_insight_selectors": false,
+    "latest_delivery_time": "2026-06-15T08:30:00Z",
+    "latest_delivery_error": null,
+    "latest_notification_error": null,
+    "start_logging_time": null,
+    "stop_logging_time": "2026-06-15T08:30:00Z",
+    "tags": {
+      "Environment": "production",
+      "Project": "launchnest",
+      "Purpose": "audit"
+    },
+    "notes": "Trail was disabled during a maintenance window on 2026-06-15 and never re-enabled. AWS activity for the last 4 months is not being logged."
+  }
+]

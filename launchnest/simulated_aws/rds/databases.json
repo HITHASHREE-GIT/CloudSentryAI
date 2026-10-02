@@ -1,0 +1,76 @@
+[
+  {
+    "db_identifier": "launchnest-db",
+    "db_instance_arn": "arn:aws:rds:us-east-1:123456789012:db:launchnest-db",
+    "engine": "postgres",
+    "engine_version": "15.4",
+    "instance_class": "db.t3.medium",
+    "region": "us-east-1",
+    "availability_zone": "us-east-1a",
+    "multi_az": true,
+    "created_date": "2024-04-15T10:00:00Z",
+    "status": "available",
+    "allocated_storage_gb": 100,
+    "storage_type": "gp3",
+    "storage_encrypted": true,
+    "kms_key_id": "arn:aws:kms:us-east-1:123456789012:key/db-abc-123",
+    "publicly_accessible": false,
+    "endpoint": "launchnest-db.cluster-abc123.us-east-1.rds.amazonaws.com",
+    "port": 5432,
+    "vpc_id": "vpc-0abc123456",
+    "subnet_ids": [
+      "subnet-0ghi345678",
+      "subnet-0jkl901234"
+    ],
+    "security_groups": [
+      {
+        "group_id": "sg-database",
+        "group_name": "launchnest-db-sg"
+      }
+    ],
+    "parameter_group": "launchnest-pg15",
+    "option_group": "default:postgres-15",
+    "backup_retention_period_days": 30,
+    "backup_window": "03:00-04:00",
+    "maintenance_window": "sun:04:00-sun:05:00",
+    "preferred_backup_window_utc": "03:00-04:00",
+    "automated_backups": true,
+    "snapshot_on_delete": true,
+    "deletion_protection": true,
+    "iam_authentication_enabled": true,
+    "performance_insights_enabled": true,
+    "performance_insights_kms_key": "arn:aws:kms:us-east-1:123456789012:key/pi-abc-123",
+    "enhanced_monitoring": {
+      "enabled": true,
+      "interval_seconds": 60,
+      "role_arn": "arn:aws:iam::123456789012:role/rds-monitoring-role"
+    },
+    "logging": {
+      "postgresql_logs": {
+        "enabled": true,
+        "retention_days": 30
+      },
+      "upgrade_logs": {
+        "enabled": true,
+        "retention_days": 30
+      },
+      "error_logs": {
+        "enabled": true,
+        "retention_days": 30
+      }
+    },
+    "auto_minor_version_upgrade": true,
+    "copy_tags_to_snapshot": true,
+    "tags": {
+      "Environment": "production",
+      "Project": "launchnest",
+      "Role": "primary-database",
+      "DataClassification": "confidential",
+      "Backup": "required",
+      "Compliance": "gdpr"
+    },
+    "estimated_size_gb": 68.5,
+    "last_backup": "2026-10-02T03:15:00Z",
+    "latest_snapshot_id": "rds:launchnest-db-2026-10-02-03-15"
+  }
+]

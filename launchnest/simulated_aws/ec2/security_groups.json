@@ -1,0 +1,142 @@
+[
+  {
+    "group_id": "sg-web",
+    "group_name": "launchnest-web-sg",
+    "arn": "arn:aws:ec2:us-east-1:123456789012:security-group/sg-web",
+    "description": "Security group for LaunchNest web servers",
+    "vpc_id": "vpc-0abc123456",
+    "region": "us-east-1",
+    "created_date": "2024-04-10T08:00:00Z",
+    "inbound_rules": [
+      {
+        "rule_id": "sgr-001",
+        "protocol": "tcp",
+        "port_range": "80",
+        "port": 80,
+        "source": "0.0.0.0/0",
+        "source_type": "ipv4",
+        "description": "HTTP from anywhere (intended for web traffic)"
+      },
+      {
+        "rule_id": "sgr-002",
+        "protocol": "tcp",
+        "port_range": "443",
+        "port": 443,
+        "source": "0.0.0.0/0",
+        "source_type": "ipv4",
+        "description": "HTTPS from anywhere (intended for web traffic)"
+      },
+      {
+        "rule_id": "sgr-003",
+        "protocol": "tcp",
+        "port_range": "22",
+        "port": 22,
+        "source": "0.0.0.0/0",
+        "source_type": "ipv4",
+        "description": "SSH from anywhere - DANGEROUS - should be restricted to office IP",
+        "risk": "CRITICAL",
+        "risk_reason": "SSH port open to entire internet enables brute-force attacks and unauthorized access attempts"
+      }
+    ],
+    "outbound_rules": [
+      {
+        "protocol": "all",
+        "port_range": "all",
+        "destination": "0.0.0.0/0",
+        "description": "Allow all outbound (default AWS behavior)"
+      }
+    ],
+    "attached_to": [
+      {
+        "resource_type": "ec2_instance",
+        "resource_id": "i-0abcd1234efgh5678",
+        "resource_name": "launchnest-web-server-01"
+      }
+    ],
+    "tags": {
+      "Environment": "production",
+      "Project": "launchnest",
+      "ManagedBy": "manual"
+    }
+  },
+  {
+    "group_id": "sg-api",
+    "group_name": "launchnest-api-sg",
+    "arn": "arn:aws:ec2:us-east-1:123456789012:security-group/sg-api",
+    "description": "Security group for LaunchNest API servers",
+    "vpc_id": "vpc-0abc123456",
+    "region": "us-east-1",
+    "created_date": "2024-04-10T08:00:00Z",
+    "inbound_rules": [
+      {
+        "rule_id": "sgr-004",
+        "protocol": "tcp",
+        "port_range": "8080",
+        "port": 8080,
+        "source": "sg-web",
+        "source_type": "security_group",
+        "description": "API traffic from web servers only (correct configuration)"
+      }
+    ],
+    "outbound_rules": [
+      {
+        "protocol": "all",
+        "port_range": "all",
+        "destination": "0.0.0.0/0",
+        "description": "Allow all outbound (default AWS behavior)"
+      }
+    ],
+    "attached_to": [
+      {
+        "resource_type": "ec2_instance",
+        "resource_id": "i-1abcd2345efgh6789",
+        "resource_name": "launchnest-api-server-01"
+      }
+    ],
+    "tags": {
+      "Environment": "production",
+      "Project": "launchnest",
+      "ManagedBy": "manual"
+    }
+  },
+  {
+    "group_id": "sg-database",
+    "group_name": "launchnest-db-sg",
+    "arn": "arn:aws:ec2:us-east-1:123456789012:security-group/sg-database",
+    "description": "Security group for LaunchNest RDS database",
+    "vpc_id": "vpc-0abc123456",
+    "region": "us-east-1",
+    "created_date": "2024-04-10T08:00:00Z",
+    "inbound_rules": [
+      {
+        "rule_id": "sgr-005",
+        "protocol": "tcp",
+        "port_range": "5432",
+        "port": 5432,
+        "source": "sg-api",
+        "source_type": "security_group",
+        "description": "PostgreSQL from API servers only (correct configuration)"
+      }
+    ],
+    "outbound_rules": [
+      {
+        "protocol": "all",
+        "port_range": "all",
+        "destination": "0.0.0.0/0",
+        "description": "Allow all outbound (default AWS behavior)"
+      }
+    ],
+    "attached_to": [
+      {
+        "resource_type": "rds_instance",
+        "resource_id": "launchnest-db",
+        "resource_name": "launchnest-db"
+      }
+    ],
+    "tags": {
+      "Environment": "production",
+      "Project": "launchnest",
+      "ManagedBy": "manual"
+    }
+  }
+]

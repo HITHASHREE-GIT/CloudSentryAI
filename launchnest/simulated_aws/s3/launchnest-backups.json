@@ -1,0 +1,48 @@
+{
+  "bucket_name": "launchnest-backups",
+  "region": "us-east-1",
+  "creation_date": "2024-03-15T10:35:00Z",
+  "owner": "launchnest-admin",
+  "purpose": "Automated backups and audit logs storage",
+  "public_access_block": true,
+  "block_public_acls": true,
+  "block_public_policy": true,
+  "ignore_public_acls": true,
+  "restrict_public_buckets": true,
+  "encryption": {
+    "enabled": true,
+    "algorithm": "aws:kms",
+    "type": "SSE-KMS",
+    "kms_key_id": "arn:aws:kms:us-east-1:123456789012:key/abc-123-def",
+    "rotation_enabled": true
+  },
+  "versioning": {
+    "enabled": true,
+    "status": "Enabled",
+    "mfa_delete": true
+  },
+  "logging": {
+    "enabled": true,
+    "target_bucket": "launchnest-backups",
+    "target_prefix": "logs/backups/"
+  },
+  "lifecycle_rules": [
+    {
+      "id": "archive-old-backups",
+      "status": "Enabled",
+      "transition_to_glacier_after_days": 90,
+      "expiration_days": 365
+    }
+  ],
+  "acl": "private",
+  "tags": {
+    "Environment": "production",
+    "Project": "launchnest",
+    "DataClassification": "confidential",
+    "Purpose": "backup-and-audit",
+    "Compliance": "required"
+  },
+  "estimated_object_count": 12500,
+  "estimated_size_gb": 87.3,
+  "last_accessed": "2026-10-02T07:45:00Z"
+}
