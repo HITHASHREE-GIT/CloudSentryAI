@@ -82,4 +82,7 @@ $RECYCLE.BIN/
 
 # ─── Synexus Extension (persistent interference) ───
 .synexus/
-.github/workflows/synexus-enforcer.yml
+.github/workflows/synexus-enforcer.yml 
+launchnest/backend/venv/ 
+ 
+launchnest/backend/data/*.db 
