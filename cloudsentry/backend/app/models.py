@@ -97,6 +97,11 @@ class Finding(BaseModel):
     # Risk score is filled in later by the risk engine
     risk_score: Optional[int] = Field(None, ge=0, le=100)
 
+    # ML prediction (filled in by predictor)
+    ml_priority: Optional[str] = Field(None, description="ML-predicted priority: LOW, MEDIUM, HIGH, CRITICAL")
+    ml_priority_score: Optional[int] = Field(None, ge=0, le=3, description="ML priority as int: 0-3")
+    ml_confidence: Optional[float] = Field(None, ge=0, le=1, description="ML confidence score")
+
     # Timestamps
     created_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
 

@@ -4,6 +4,9 @@
  *
  * Note: Since the API regenerates finding IDs on each call,
  * we fetch all findings and locate the one matching the URL id.
+ *
+ * Displays both rule-based severity (authoritative) and ML-predicted
+ * priority (supplementary signal).
  */
 
 import { useEffect, useState } from 'react';
@@ -60,6 +63,9 @@ function FindingDetail() {
   }
 
   const cls = (finding.severity || 'low').toLowerCase();
+  const mlConfidence = finding.ml_confidence
+    ? (finding.ml_confidence * 100).toFixed(1)
+    : null;
 
   return (
     <>
@@ -76,12 +82,39 @@ function FindingDetail() {
             alignItems: 'center',
             gap: 12,
             marginBottom: 8,
+            flexWrap: 'wrap',
           }}
         >
           <span className={`badge ${cls}`}>{finding.severity}</span>
           <span className={`risk-pill ${cls}`}>
             Risk {finding.risk_score}/100
           </span>
+          {finding.ml_priority && (
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '3px 10px',
+                borderRadius: 12,
+                background: 'rgba(88, 166, 255, 0.15)',
+                color: '#58a6ff',
+                border: '1px solid rgba(88, 166, 255, 0.4)',
+                fontSize: 11,
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: 0.5,
+              }}
+              title={`ML predicted priority (confidence: ${mlConfidence}%)`}
+            >
+              🤖 ML: {finding.ml_priority}
+              {mlConfidence && (
+                <span style={{ opacity: 0.7, fontWeight: 500 }}>
+                  {mlConfidence}%
+                </span>
+              )}
+            </span>
+          )}
         </div>
         <h1 className="page-title">{finding.rule_name}</h1>
         <p className="page-subtitle">
@@ -118,6 +151,28 @@ function FindingDetail() {
           <div className="detail-label">Detected</div>
           <div className="detail-value">{finding.created_at}</div>
         </div>
+
+        {finding.ml_priority && (
+          <div className="detail-row">
+            <div className="detail-label">ML Prediction</div>
+            <div className="detail-value">
+              <strong style={{ color: '#58a6ff' }}>
+                {finding.ml_priority}
+              </strong>
+              {mlConfidence && (
+                <span
+                  style={{
+                    color: 'var(--text-secondary)',
+                    marginLeft: 8,
+                    fontSize: 13,
+                  }}
+                >
+                  · confidence {mlConfidence}%
+                </span>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ── Description ── */}

@@ -86,3 +86,12 @@ $RECYCLE.BIN/
 launchnest/backend/venv/ 
  
 launchnest/backend/data/*.db 
+
+# ═══════════════════════════════════════════════
+# ML Workspace — Session 9
+# ═══════════════════════════════════════════════
+ml_workspace/venv/
+ml_workspace/**/__pycache__/
+ml_workspace/**/*.pyc
+ml_workspace/notebooks/*.ipynb_checkpoints/
+ml_workspace/.ipynb_checkpoints/

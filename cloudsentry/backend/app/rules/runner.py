@@ -3,6 +3,8 @@ CloudSentry AI — Rule Runner
 =============================
 Executes all registered rules against all normalized resources.
 Produces a comprehensive scan result.
+
+After rules run, the ML predictor assigns an ML priority to each finding.
 """
 
 from typing import List
@@ -37,6 +39,9 @@ class RuleRunner:
 
                 if result.status == "FAIL":
                     findings.append(self._make_finding(rule, result))
+
+        # ─── ML predictions ───
+        self._apply_ml_predictions(findings)
 
         total = len(results)
         failed = len(findings)
@@ -84,6 +89,21 @@ class RuleRunner:
             return "cloudtrail"
         return "unknown"
 
+    def _apply_ml_predictions(self, findings: List[Finding]) -> None:
+        """Attach ML-predicted priority to each finding (best-effort)."""
+        try:
+            from app.ml.predictor import get_predictor
+            predictor = get_predictor()
+
+            for finding in findings:
+                prediction = predictor.predict(finding)
+                finding.ml_priority = prediction["ml_priority"]
+                finding.ml_priority_score = prediction["ml_priority_score"]
+                finding.ml_confidence = prediction["ml_confidence"]
+        except Exception as e:
+            # ML is an additional signal — never fail the scan because of it
+            print(f"[ML] Prediction skipped: {e}")
+
 
 # ───────────────────────────────────────────────
 # SELF-TEST: python -m app.rules.runner
@@ -104,30 +124,29 @@ if __name__ == "__main__":
     findings = report["findings"]
 
     print()
-    print("=" * 70)
-    print("🛡️  CLOUDSENTRY SCAN RESULT")
-    print("=" * 70)
-    print(f"  Resources scanned : {stats['resources_count']}")
-    print(f"  Rules evaluated   : {stats['rules_count']}")
-    print(f"  Total checks      : {stats['total_checks']}")
-    print(f"  ✅ PASSED         : {stats['passed']}")
-    print(f"  ❌ FAILED         : {stats['failed']}")
-    print("=" * 70)
-    print()
+    print("=" * 90)
+    print("🛡️  CLOUDSENTRY SCAN RESULT (with ML predictions)")
+    print("=" * 90)
+    print(f"  Resources : {stats['resources_count']}")
+    print(f"  Rules     : {stats['rules_count']}")
+    print(f"  Checks    : {stats['total_checks']}")
+    print(f"  ✅ PASSED : {stats['passed']}")
+    print(f"  ❌ FAILED : {stats['failed']}")
+    print("=" * 90)
 
     if findings:
-        print("🚨 FINDINGS:")
-        print("-" * 70)
-        for i, f in enumerate(findings, 1):
-            print(f"\n  [{i}] {f.severity} — {f.rule_name}")
-            print(f"      Resource  : {f.resource_id}")
-            print(f"      Service   : {f.service}")
-            print(f"      Evidence  : {f.evidence}")
-            print(f"      Fix       : {f.recommendation[:70]}...")
         print()
-        print("-" * 70)
+        print(f"{'Rule':<32} {'Rule Severity':<14} {'ML Priority':<12} {'Conf':>6}")
+        print("-" * 90)
+        for f in findings:
+            print(
+                f"{(f.rule_name or '')[:30]:<32} "
+                f"{f.severity:<14} "
+                f"{(f.ml_priority or '—'):<12} "
+                f"{(f.ml_confidence or 0):>6.3f}"
+            )
+        print("-" * 90)
         print(f"  Total findings: {len(findings)}")
     else:
-        print("✅ No findings — all resources passed.")
-
+        print("✅ No findings.")
     print()
