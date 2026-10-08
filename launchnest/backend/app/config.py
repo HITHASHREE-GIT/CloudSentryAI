@@ -4,6 +4,7 @@ LaunchNest — Configuration
 Central settings for paths, API metadata, and JWT configuration.
 """
 
+import os
 from pathlib import Path
 
 # ═══════════════════════════════════════════════════════
@@ -44,6 +45,11 @@ ALLOWED_ORIGINS = [
     "http://localhost:5174",
     "http://localhost:5173",  # in case of conflict
 ]
+
+# Production frontend URL (set as env var on Render)
+_frontend_url = os.getenv("FRONTEND_URL")
+if _frontend_url:
+    ALLOWED_ORIGINS.append(_frontend_url)
 
 # ═══════════════════════════════════════════════════════
 # DEBUG
