@@ -1,12 +1,28 @@
 /**
  * LaunchNest — API Client
- * Axios instance for the LaunchNest backend on port 8000.
- * Auto-attaches JWT token from localStorage.
+ * Axios instance pointing at the LaunchNest backend (port 8000).
+ *
+ * Production: uses VITE_API_URL env var (set on Render).
+ * Fallback:  if env var missing, uses Render backend URL in production,
+ *            or localhost in development.
  */
 
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Detect environment
+const isLocalhost =
+  window.location.hostname === 'localhost' ||
+  window.location.hostname === '127.0.0.1';
+
+// Choose backend URL with 3-level fallback:
+//   1. Env var (VITE_API_URL) — set on Render
+//   2. Production default — Render backend URL
+//   3. Development default — localhost
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (isLocalhost
+    ? 'http://localhost:8000'
+    : 'https://launchnest-backend-xtgl.onrender.com');
 
 const client = axios.create({
   baseURL: API_BASE_URL,
@@ -16,7 +32,7 @@ const client = axios.create({
   },
 });
 
-// ─── Request interceptor: attach JWT ───
+// ── Request interceptor: attach JWT ──
 client.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('ln_token');
@@ -28,12 +44,11 @@ client.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// ─── Response interceptor: handle 401 ───
+// ── Response interceptor: handle 401 ──
 client.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Token expired or invalid — clear and reload
       localStorage.removeItem('ln_token');
       localStorage.removeItem('ln_user');
       if (window.location.pathname !== '/login') {
@@ -44,7 +59,7 @@ client.interceptors.response.use(
   }
 );
 
-// ─── API methods ───
+// ── API methods ──
 
 export const api = {
   // Auth

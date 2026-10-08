@@ -3,12 +3,26 @@
  * Axios instance pointing at the FastAPI backend (port 8001).
  *
  * Production: uses VITE_API_URL env var (set on Render).
- * Local:      falls back to http://localhost:8001
+ * Fallback:  if env var missing, uses Render backend URL in production,
+ *            or localhost in development.
  */
 
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
+// Detect environment
+const isLocalhost =
+  window.location.hostname === 'localhost' ||
+  window.location.hostname === '127.0.0.1';
+
+// Choose backend URL with 3-level fallback:
+//   1. Env var (VITE_API_URL) — set on Render
+//   2. Production default — Render backend URL
+//   3. Development default — localhost
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (isLocalhost
+    ? 'http://localhost:8001'
+    : 'https://cloudsentry-backend.onrender.com');
 
 const client = axios.create({
   baseURL: API_BASE_URL,
